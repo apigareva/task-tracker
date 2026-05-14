@@ -2,7 +2,7 @@
 
 | | |
 |------|------------------------|
-| URL | /api/v1/projects/{id} |
+| URL | /api/v1/projects/{project_id} |
 | Service Method | GET | 
 | Description | get project by id |
 | Return Type| JSON |

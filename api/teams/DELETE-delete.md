@@ -1,7 +1,7 @@
 # Удалить команду
 | | |
 |------|------------------------|
-| URL | /api/v1/teams/{id} |
+| URL | /api/v1/teams/{team_id} |
 | Service Method | DELETE | 
 | Description | delete team by id |
 | Return Type| JSON |

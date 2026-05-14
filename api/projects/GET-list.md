@@ -14,11 +14,25 @@
 
 ### 2.1 Header parameters
 
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+
 ### 2.2 Query params
+
+| Name | Type | Max length | Required | Description |
+|------|------|------------|----------|-------------|
+|limit| Number || No | Максимальное количество записей для загрузки |
+|offset| Number || No | Количество записей которые нужно пропустить|
 
 ### 2.3 Request body
 
+| Name | Type | Max length | Required | Description |
+|------|------|------------|----------|-------------|
+
 ## 3. Response parameters
+
+| Name | Type | Max length | Description |
+|------|------|------------|-------------|
 
 ## 4. Security requirements of method
 

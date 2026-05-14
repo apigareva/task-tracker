@@ -1,7 +1,7 @@
 # Обновить данные проекта
 | | |
 |------|------------------------|
-| URL | /api/v1/projects/{id} |
+| URL | /api/v1/projects/{project_id} |
 | Service Method | PATCH | 
 | Description | update project |
 | Return Type| JSON |

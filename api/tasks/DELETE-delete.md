@@ -2,7 +2,7 @@
 
 | | |
 |------|------------------------|
-| URL | /api/v1/tasks/{id} |
+| URL | /api/v1/tasks/{task_id} |
 | Service Method | DELETE | 
 | Description | delete task by id |
 | Return Type| JSON |

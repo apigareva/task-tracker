@@ -2,7 +2,7 @@
 
 | | |
 |------|------------------------|
-| URL | /api/v1/tasks/{id} |
+| URL | /api/v1/tasks/{task_id} |
 | Service Method | GET | 
 | Description | get task by id |
 | Return Type| JSON |

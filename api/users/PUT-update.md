@@ -2,7 +2,7 @@
 
 | | |
 |------|------------------------|
-| URL | /api/v1/users/{id} |
+| URL | /api/v1/users/{user_id} |
 | Service Method | PUT | 
 | Description | update user by id |
 | Return Type| JSON |
