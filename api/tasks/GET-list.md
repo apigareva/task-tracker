@@ -36,7 +36,11 @@
 | due_date_from | DATE | — | No | Фильтр: дата завершения от (включительно), формат `YYYY-MM-DD` |
 | due_date_to | DATE | — | No | Фильтр: дата завершения до (включительно), формат `YYYY-MM-DD` |
 
-### 2.3 Request body
+### 2.3 Path params
+
+Отсутствуют.
+
+### 2.4 Request body
 
 Отсутствует (метод GET).
 
@@ -54,7 +58,7 @@
 | data[].state | STRING | — | Статус задачи (`task_state` ENUM) |
 | data[].due_date | DATE | — | Дата завершения задачи |
 | data[].created_by | STRING | 36 | UUID создателя задачи (`users.id`) |
-| data[].created_at | DATE | — | Дата и время создания задачи |
+| data[].created_at | DATE/TIME | — | Дата и время создания задачи |
 | data[].assigned_to | STRING | 36 | UUID исполнителя задачи (`members.id`) |
 | data[].project_id | STRING | 36 | UUID проекта (`projects.id`) |
 | total | NUMBER | — | Общее количество задач (с учётом фильтров, без пагинации) |
@@ -121,12 +125,15 @@
 | 403 | Доступ запрещён | false | `forbidden` | "Access denied" |
 | 429 | Превышен лимит запросов | false | `rate_limit_exceeded` | "Too many requests" |
 | 500 | Внутренняя ошибка сервера | false | `internal_server_error` | "An internal server error occurred" |
+| 503 | Сервер временно недоступен | false | `service_unavailable` | "Service is temporarily unavailable. Please try again later" |
 
 ## 9. Example
 
+### 9.1 Response 200 OK
+
 **Request:**
 
-```
+```http
 GET /api/v1/tasks?project_id=a1b2c3d4-0000-0000-0000-000000000001&state=IN_PROGRESS&limit=10&offset=0
 Authorization: Bearer <your_token_here>
 ```
@@ -155,6 +162,35 @@ Authorization: Bearer <your_token_here>
 }
 ```
 
+### 9.2 Response 400 Bad Request
+
+**Request:**
+
+```http
+GET /api/v1/tasks?limit=-1
+Authorization: Bearer <your_token_here>
+```
+
+**Response (400):**
+
+```json
+{
+  "success": false,
+  "data": null,
+  "total": null,
+  "errorMessage": "Invalid limit value"
+}
+```
+
+### 9.3 Response 401 Unauthorized
+
+**Request:**
+
+```http
+GET /api/v1/tasks?limit=10&offset=0
+Authorization: Bearer <invalid_token>
+```
+
 **Response (401):**
 
 ```json
@@ -163,6 +199,86 @@ Authorization: Bearer <your_token_here>
   "data": null,
   "total": null,
   "errorMessage": "Unauthorized"
+}
+```
+
+### 9.4 Response 403 Forbidden
+
+**Request:**
+
+```http
+GET /api/v1/tasks?project_id=a1b2c3d4-0000-0000-0000-000000000001
+Authorization: Bearer <your_token_here>
+```
+
+**Response (403):**
+
+```json
+{
+  "success": false,
+  "data": null,
+  "total": null,
+  "errorMessage": "Access denied"
+}
+```
+
+### 9.5 Response 429 Too Many Requests
+
+**Request:**
+
+```http
+GET /api/v1/tasks?limit=10&offset=0
+Authorization: Bearer <your_token_here>
+```
+
+**Response (429):**
+
+```json
+{
+  "success": false,
+  "data": null,
+  "total": null,
+  "errorMessage": "Too many requests"
+}
+```
+
+### 9.6 Response 500 Internal Server Error
+
+**Request:**
+
+```http
+GET /api/v1/tasks?limit=10&offset=0
+Authorization: Bearer <your_token_here>
+```
+
+**Response (500):**
+
+```json
+{
+  "success": false,
+  "data": null,
+  "total": null,
+  "errorMessage": "An internal server error occurred"
+}
+```
+
+### 9.7 Response 503 Service Unavailable
+
+**Request:**
+
+```http
+GET /api/v1/tasks?limit=10&offset=0
+Authorization: Bearer <your_token_here>
+```
+
+**Response (503):**
+
+```json
+{
+  "success": false,
+  "data": null,
+  "total": null,
+  "errorMessage": "Service is temporarily unavailable. Please try again later"
 }
 ```
 
