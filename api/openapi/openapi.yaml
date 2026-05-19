@@ -1,0 +1,81 @@
+openapi: 3.1.0
+info:
+  title: Task Tracker
+  version: 1.0.0
+  description: API для системы трекенга задач, проектов, команд, пользователей
+servers:
+  - url: /api/v1
+    description: Base API path
+tags:
+  - name: Auth
+    description: Аутентификацияя и управление токенами
+  - name: Profile
+    description: Управление профилем текущего пользователя
+  - name: Users
+    description: Управление пользователями
+  - name: Teams
+    description: Управление командами
+  - name: Team Members
+    description: Управление участниками команд
+  - name: Projects
+    description: Управление проектами
+  - name: Tasks
+    description: Управление задачами
+  - name: Task Comments
+    description: Управление комментариями к задачам
+  - name: Task Files
+    description: Управление файлами задач
+security:
+  - BearerAuth: []
+paths:
+
+  /auth/login:
+    $ref: ./paths/auth.yaml#/authLogin
+  /auth/logout:
+    $ref: ./paths/auth.yaml#/authLogout
+  /auth/refresh:
+    $ref: ./paths/auth.yaml#/authRefresh
+
+  /profile:
+    $ref:
+  /profile/password:
+    $ref:
+
+  /users:
+    $ref:
+  /users/{user_id}:
+    $ref:   
+
+  /teams:
+    $ref:
+  /teams/{team_id}:
+    $ref:
+  /teams/{team_id}/members:
+    $ref:
+  /teams/{team_id}/members/{member_id}:
+    $ref:
+
+  /projects:
+    $ref:
+  /projects/{project_id}:
+    $ref:
+
+  /tasks:
+    $ref:
+  /tasks/{task_id}:
+    $ref:
+  /tasks/{task_id}/comments:
+    $ref:
+  /tasks/{task_id}/comments/{comment_id}:
+    $ref:
+  /tasks/{task_id}/files:
+    $ref:
+  /tasks/{task_id}/files/{file_id}:
+    $ref:
+
+components:
+  securitySchemes: 
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

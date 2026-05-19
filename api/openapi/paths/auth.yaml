@@ -1,0 +1,273 @@
+authLogin:
+  post:
+    summary: Вход в систему
+    description: Аутентифицирует пользователя и возвращает пару токенов
+    operationId: login
+    tags: 
+      - Auth
+    security: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - email
+              - password
+            properties:
+              email:
+                type: string
+                format: email
+                maxLength: 320
+                description: Email пользователя
+                example: user@example.com
+              password:
+                type: string
+                format: password
+                minLength: 1
+                description: Пароль пользователя
+                example: <password>
+          examples:
+            login:
+              summary: Вход пользователя
+              value:
+                email: user@example.com
+                password: <password>
+    responses:
+      '200':
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+                - data
+                - errorMessage
+              properties:
+                success:
+                  type: boolean
+                  description: Признак успешного выполнения запроса
+                  example: true
+                errorMessage:
+                  type:
+                    - string
+                    - 'null'
+                  description: Сообщение об ошибке
+                  example: null
+                data:
+                  type: object
+                  description: Объект с токенами и данными пользователя
+                  required:
+                    - access_token
+                    - refresh_token
+                    - expires_in
+                    - user
+                  properties:
+                    access_token:
+                      type: string
+                      description: Access JWT-токен
+                      example: <access_token>
+                    refresh_token:
+                      type: string
+                      description: Refresh-токен
+                      example: <refresh_token>
+                    expires_in:
+                      type: integer
+                      format: int32
+                      description: Время жизни access-токена в секундах
+                      example: 3600
+                    user:
+                      type: object
+                      description: Данные пользователя
+                      required:
+                        - id
+                        - email
+                        - status
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                          description: UUID пользователя
+                          example: 550e8400-e29b-41d4-a716-446655440000
+                        email:
+                          type: string
+                          format: email
+                          maxLength: 320
+                          description: Email пользователя
+                          example: user@example.com
+                        status:
+                          type: string
+                          maxLength: 100
+                          description: Статус пользователя
+                          enum:
+                            - ACTIVE
+                            - BLOCKED
+                          example: ACTIVE
+            examples:
+              success:
+                summary: Успешная аутентификация
+                value:
+                  success: true
+                  data:
+                    access_token: <access_token>
+                    refresh_token: <refresh_token>
+                    expires_in: 3600
+                    user:
+                      id: 550e8400-e29b-41d4-a716-446655440000
+                      email: user@example.com
+                      status: ACTIVE
+                  errorMessage: null
+      '400':
+        description: Bad Request
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+                - data
+                - errorMessage
+              properties:
+                success:
+                  type: boolean
+                  description: Признак успешного выполнения запроса
+                  example: false
+                errorMessage:
+                  type: string
+                  description: Сообщение об ошибке
+                  example: Описание ошибки валидации
+                data:
+                  type: 'null'
+                  description: Данные отсутствуют при ошибке
+                  example: null
+            examples:
+              validationError:
+                summary: Ошибка валидации
+                value:
+                  success: false
+                  data: null
+                  errorMessage: Описание ошибки валидации
+      '401':
+        description: Unauthorized
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+                - data
+                - errorMessage
+              properties:
+                success:
+                  type: boolean
+                  description: Признак успешного выполнения запроса
+                  example: false
+                errorMessage:
+                  type: string
+                  description: Сообщение об ошибке
+                  example: Invalid email or password
+                data:
+                  type: 'null'
+                  description: Данные отсутствуют при ошибке
+                  example: null
+            examples:
+              invalidCredentials:
+                summary: Неверный email или пароль
+                value:
+                  success: false
+                  data: null
+                  errorMessage: Invalid email or password
+      '429':
+        description: Too Many Requests
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+                - data
+                - errorMessage
+              properties:
+                success:
+                  type: boolean
+                  description: Признак успешного выполнения запроса
+                  example: false
+                errorMessage:
+                  type: string
+                  description: Сообщение об ошибке
+                  example: Too many requests
+                data:
+                  type: 'null'
+                  description: Данные отсутствуют при ошибке
+                  example: null
+            examples:
+              rateLimitExceeded:
+                summary: Превышен лимит запросов
+                value:
+                  success: false
+                  data: null
+                  errorMessage: Too many requests
+      '500':
+        description: Internal Server Error
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+                - data
+                - errorMessage
+              properties:
+                success:
+                  type: boolean
+                  description: Признак успешного выполнения запроса
+                  example: false
+                errorMessage:
+                  type: string
+                  description: Сообщение об ошибке
+                  example: An internal server error occurred
+                data:
+                  type: 'null'
+                  description: Данные отсутствуют при ошибке
+                  example: null
+            examples:
+              internalServerError:
+                summary: Внутренняя ошибка сервера
+                value:
+                  success: false
+                  data: null
+                  errorMessage: An internal server error occurred
+      '503':
+        description: Service Unavailable
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+                - data
+                - errorMessage
+              properties:
+                success:
+                  type: boolean
+                  description: Признак успешного выполнения запроса
+                  example: false
+                errorMessage:
+                  type: string
+                  description: Сообщение об ошибке
+                  example: Service is temporarily unavailable. Please try again later
+                data:
+                  type: 'null'
+                  description: Данные отсутствуют при ошибке
+                  example: null
+            examples:
+              serviceUnavailable:
+                summary: Сервер временно недоступен
+                value:
+                  success: false
+                  data: null
+                  errorMessage: Service is temporarily unavailable. Please try again later
+authLogout:
+authRefresh:
